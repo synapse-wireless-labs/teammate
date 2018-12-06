@@ -5,6 +5,10 @@
   "repository": "git@github.com:synapse-wireless-labs/teammate.git",
   "author": "Mike Ryan <mike.ryan52@gmail.com>",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "./projects/desktop-ui"
+  ],
   "scripts": {
     "start:msft-graph-connector": "ts-node ./projects/msft-graph-connector/index.ts"
   },
