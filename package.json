@@ -11,15 +11,18 @@
   ],
   "scripts": {
     "start:msft-graph-connector": "ts-node ./projects/msft-graph-connector/index.ts",
-    "start:github-graph-connector": "ts-node ./projects/github-graph-connector/index.ts"
+    "start:github-graph-connector": "ts-node ./projects/github-graph-connector/index.ts",
+    "start:desktop": "electron ./projects/desktop-backend"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/electron": "^1.6.10",
     "@types/node": "^10.12.12",
     "ts-node": "^7.0.1",
     "typescript": "^3.2.1"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "electron": "^3.0.10"
   }
 }
