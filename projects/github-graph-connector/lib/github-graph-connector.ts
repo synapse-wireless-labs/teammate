@@ -2,9 +2,15 @@ import { IncomingMessage } from 'http';
 import * as https from 'https';
 
 import {
-  PULL_REQUESTS_NEEDING_REVIEW_QUERY,
+  OPEN_PULL_REQUESTS_WITH_MERGEABILITY_STATUS_QUERY,
+  REPOSITORIES_WITH_OPEN_PULL_REQUESTS_WITH_REQUESTED_REVIEWERS_QUERY,
   USERNAME_QUERY
 } from './gql-queries';
+import {
+  PullRequestsOnYourRepositoriesResponse,
+  UsernameResponse,
+  PullRequestsWithMergeabilityStatusResponse
+} from './models';
 
 const API_URL = 'https://api.github.com/graphql';
 
@@ -56,16 +62,19 @@ function promisePost(postOptions: any, postData: any) {
 
 function getPullRequestsOnRepositoryOfLoggedInUser(secret: string) {
   return promisePost(
-    generatePostOptions(secret, PULL_REQUESTS_NEEDING_REVIEW_QUERY),
-    PULL_REQUESTS_NEEDING_REVIEW_QUERY
-  ) as Promise<PullRequestsOnYourRepositories>;
+    generatePostOptions(
+      secret,
+      REPOSITORIES_WITH_OPEN_PULL_REQUESTS_WITH_REQUESTED_REVIEWERS_QUERY
+    ),
+    REPOSITORIES_WITH_OPEN_PULL_REQUESTS_WITH_REQUESTED_REVIEWERS_QUERY
+  ) as Promise<PullRequestsOnYourRepositoriesResponse>;
 }
 
 function getYourUsername(secret: string) {
   return promisePost(
     generatePostOptions(secret, USERNAME_QUERY),
     USERNAME_QUERY
-  ) as Promise<Username>;
+  ) as Promise<UsernameResponse>;
 }
 
 async function getNumberOfPullRequestsYouAreRequestedToReview(secret: string) {
@@ -107,50 +116,29 @@ async function getNumberOfPullRequestsYouAreRequestedToReview(secret: string) {
   });
   return numberOfPullRequestsToReview;
 }
-interface Username {
-  data: {
-    viewer: {
-      login: string;
-    };
-  };
-}
-interface PullRequestsOnYourRepositories {
-  data: {
-    viewer: {
-      repositories: Repositories;
-    };
-  };
-}
-interface Repositories {
-  nodes: [
-    {
-      name: string;
-      pullRequests: {
-        nodes: [
-          {
-            title: string;
-            permalink: string;
-            author: {
-              login: string;
-            };
-            reviewRequests: {
-              nodes: [
-                {
-                  requestedReviewer: {
-                    login: string;
-                  };
-                }
-              ];
-            };
-          }
-        ];
-      };
-    }
-  ];
+
+async function getNumberOfOpenPullRequestsWithABuildRunning(secret: string) {
+  const openPullRequestsResponse = (await promisePost(
+    generatePostOptions(
+      secret,
+      OPEN_PULL_REQUESTS_WITH_MERGEABILITY_STATUS_QUERY
+    ),
+    OPEN_PULL_REQUESTS_WITH_MERGEABILITY_STATUS_QUERY
+  )) as PullRequestsWithMergeabilityStatusResponse;
+
+  const openPullRequests =
+    openPullRequestsResponse.data.viewer.pullRequests.nodes;
+
+  console.log(openPullRequests);
+
+  return openPullRequests.filter(
+    pullRequest => pullRequest.mergeable === 'UNKNOWN'
+  ).length;
 }
 
 export {
   getYourUsername,
   getNumberOfPullRequestsYouAreRequestedToReview,
-  getPullRequestsOnRepositoryOfLoggedInUser
+  getPullRequestsOnRepositoryOfLoggedInUser,
+  getNumberOfOpenPullRequestsWithABuildRunning
 };
