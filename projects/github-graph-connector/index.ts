@@ -1,5 +1,5 @@
 import { GithubGraphConnector } from './lib/github-graph-connector';
 
-GithubGraphConnector.getPullRequestsOnRepositoryOfLoggedInUser();
+GithubGraphConnector.getNumberOfPullRequestsYouAreRequestedToReview();
 
 export { GithubGraphConnector };
