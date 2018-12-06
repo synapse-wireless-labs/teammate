@@ -1,4 +1,4 @@
-import { GithubGraphConnector } from './lib/github-graph-connector';
+import * as GithubGraphConnector from './lib/github-graph-connector';
 import { readFileWithPromise as readSecret } from './lib/secret-loader';
 import * as path from 'path';
 

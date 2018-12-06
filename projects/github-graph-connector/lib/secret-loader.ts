@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import * as path from 'path';
 
 const SECRET_FILE_PATH = '../github-api.secret';
 
