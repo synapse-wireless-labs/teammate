@@ -9,6 +9,10 @@ const outlookOAuth = electronOauth2(oauthConfig, windowParams);
 
 let win: BrowserWindow | null = null;
 
+app
+  .commandLine
+  .appendSwitch('enable-web-bluetooth', 'true');
+
 function createWindow() {
   win = new BrowserWindow({ width: 800, height: 600 });
 
