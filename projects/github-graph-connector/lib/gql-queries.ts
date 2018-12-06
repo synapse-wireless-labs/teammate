@@ -7,14 +7,15 @@ const USERNAME_QUERY = JSON.stringify({
     }
   `
 });
-const PULL_REQUESTS_NEEDING_REVIEW_QUERY = JSON.stringify({
-  query: `
+const REPOSITORIES_WITH_OPEN_PULL_REQUESTS_WITH_REQUESTED_REVIEWERS_QUERY = JSON.stringify(
+  {
+    query: `
     query getPullRequestsOnRepositoryOfLoggedInUser {
       viewer {
         repositories(last: 100) {
           nodes {
             name,
-            pullRequests(last: 10) {
+            pullRequests(states: OPEN, last: 10) {
               nodes {
                 title
                 permalink
@@ -37,6 +38,25 @@ const PULL_REQUESTS_NEEDING_REVIEW_QUERY = JSON.stringify({
       }
     }
   `
+  }
+);
+const OPEN_PULL_REQUESTS_WITH_MERGEABILITY_STATUS_QUERY = JSON.stringify({
+  query: `
+    query getOpenPullRequestsAndMergeability {
+      viewer {
+        pullRequests(states: OPEN, first: 100) {
+          nodes {
+            title,
+            mergeable,
+          }
+        }
+      }
+    }
+  `
 });
 
-export { USERNAME_QUERY, PULL_REQUESTS_NEEDING_REVIEW_QUERY };
+export {
+  USERNAME_QUERY,
+  REPOSITORIES_WITH_OPEN_PULL_REQUESTS_WITH_REQUESTED_REVIEWERS_QUERY,
+  OPEN_PULL_REQUESTS_WITH_MERGEABILITY_STATUS_QUERY
+};
