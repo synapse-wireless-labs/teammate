@@ -41,14 +41,11 @@ const PULL_REQUEST_QUERY = JSON.stringify({
     }
   `
 });
-const SECRET_FILE_PATH = './github-api.secret';
 const API_URL = 'https://api.github.com/graphql';
 
 export class GithubGraphConnector {
-  // TODO: allow reading secret from file
-  // TODO: allow arbitrary secret filename
-  // TODO: allow arbitrary HTTP requester
-
+  // TODO: allow arbitrary HTTP client
+  // TODO: regenerate secret if expired
   static promisePost(postOptions: any, postData: any) {
     return new Promise((resolve, reject) => {
       let responseDataStream = '';
@@ -67,15 +64,15 @@ export class GithubGraphConnector {
             resolve(responseJson);
           });
         })
-        .on('error', (error: Error) =>
-          console.error(`An HTTP error occurred: ${error.message}`)
-        );
+        .on('error', (error: Error) => {
+          console.error(`An HTTP error occurred: ${error.message}`);
+          reject(error);
+        });
       client.write(postData);
       client.end();
     });
   }
-  static getPullRequestsOnRepositoryOfLoggedInUser() {
-    const secret = 'acd9375999df0526553b2bd45c239055027157f9';
+  static getPullRequestsOnRepositoryOfLoggedInUser(secret: string) {
     const options = {
       hostname: 'api.github.com',
       path: '/graphql',
@@ -92,8 +89,7 @@ export class GithubGraphConnector {
     >;
   }
 
-  static getYourUsername() {
-    const secret = 'acd9375999df0526553b2bd45c239055027157f9';
+  static getYourUsername(secret: string) {
     const options = {
       hostname: 'api.github.com',
       path: '/graphql',
@@ -108,10 +104,11 @@ export class GithubGraphConnector {
     return this.promisePost(options, USERNAME_QUERY) as Promise<Username>;
   }
 
-  static async getNumberOfPullRequestsYouAreRequestedToReview() {
-    const username = (await this.getYourUsername()).data.viewer.login;
-    const repositories = (await this.getPullRequestsOnRepositoryOfLoggedInUser())
-      .data.viewer.repositories;
+  static async getNumberOfPullRequestsYouAreRequestedToReview(secret: string) {
+    const username = (await this.getYourUsername(secret)).data.viewer.login;
+    const repositories = (await this.getPullRequestsOnRepositoryOfLoggedInUser(
+      secret
+    )).data.viewer.repositories;
     const repositoriesWithPullRequests = repositories.nodes.filter(
       repository => repository.pullRequests.nodes.length > 0
     );
