@@ -10,7 +10,8 @@
     "./projects/desktop-ui"
   ],
   "scripts": {
-    "start:msft-graph-connector": "ts-node ./projects/msft-graph-connector/index.ts"
+    "start:msft-graph-connector": "ts-node ./projects/msft-graph-connector/index.ts",
+    "start:github-graph-connector": "ts-node ./projects/github-graph-connector/index.ts"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
