@@ -1,0 +1,19 @@
+{
+  "name": "teammate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:synapse-wireless-labs/teammate.git",
+  "author": "Mike Ryan <mike.ryan52@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start:msft-graph-connector": "ts-node ./projects/msft-graph-connector/index.ts"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
