@@ -189,10 +189,3 @@ interface Repositories {
     }
   ];
 }
-interface PullRequest {
-  title: string;
-  permalink: string;
-  author: {
-    login: string;
-  };
-}
