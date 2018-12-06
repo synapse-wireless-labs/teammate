@@ -18,7 +18,7 @@ import { timer, Subscription } from 'rxjs';
 // @dpierce - test
 
 @Component({
-  selector: 'app-root',
+  selector: 'dui-root',
   template: `
     <!-- The content below is only a placeholder and can be replaced. -->
     <div
@@ -74,6 +74,7 @@ import { timer, Subscription } from 'rxjs';
         -->
       </div>
     </div>
+    <dui-ble-connect></dui-ble-connect>
   `,
   styles: [
     `

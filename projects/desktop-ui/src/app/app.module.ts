@@ -3,10 +3,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { BLEConnectComponent } from './ble-connect.component';
+import { WebBluetoothModule } from '@manekinekko/angular-web-bluetooth';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule],
+  declarations: [AppComponent, BLEConnectComponent, BrowserAnimationsModule],
+  imports: [
+    BrowserModule,
+    WebBluetoothModule.forRoot({
+      enableTracing: true, // or false, this will enable logs in the browser's console
+    }),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
