@@ -63,4 +63,6 @@ typings/
 \.idea/
 
 # API tokens
+token
+secrets.ts
 *.secret
