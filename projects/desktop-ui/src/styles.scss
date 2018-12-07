@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
+  padding: 1rem;
+}
+
+section {
+  display: block;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  background-color: white;
+  padding: 1rem;
+
+  &.active {
+    border: 1px solid #249a66;
+    border-bottom: 0;
+    background-color: #4c8;
+  }
+  button {
+    float: right;
+  }
+}
+label {
+  display: inline;
+}
